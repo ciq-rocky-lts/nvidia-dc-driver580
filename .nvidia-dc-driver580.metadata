@@ -1,0 +1,12 @@
+c0098e4f2191ea8c68624e739c474e811bf49d8b80c4eec697fc140e5c7c63cf SOURCES/fabricmanager-linux-x86_64-580.159.03-archive.tar.xz
+031a9ee3c1d3d653dae78f213b2b0451263731be2969dc13d49e4a11ab93c66b SOURCES/imex-linux-sbsa-580.159.03-archive.tar.xz
+6a8b2f79666ae1da4b29e46417122bbf58a37191a7d3ee137abbdd7724bf8133 SOURCES/libnvidia_nscq-linux-sbsa-580.159.03-archive.tar.xz
+e190611c6993d56169cec86a647d9a18470e641ea494e04346a8b4cea36da948 SOURCES/libnvsdm-linux-x86_64-580.159.03-archive.tar.xz
+feb0b55a6fae87905ff273a457a79608f8e27af7935f6f8bf4fb19104fc06485 SOURCES/nvidia-driver-580.159.03-i386.tar.xz
+40c2e48a81e9613d34f010962378fb33fcfb1b166d571a909c1a9a049dfe5c9d SOURCES/nvidia-kmod-common-580.159.03.tar.xz
+79ad7edf39ed7bc5b4572a7aa9184c998f675e0d04b0da4113d0d975eb4cb693 SOURCES/fabricmanager-linux-sbsa-580.159.03-archive.tar.xz
+d4523d00288e199cddafcd9b8e1374633f088f3c08e231791ffc7fb6443847f4 SOURCES/libnvidia_nscq-linux-x86_64-580.159.03-archive.tar.xz
+a37eb59b02338abcb876abe376854c60c84c34d3c071d140a9bde7819aae5f9b SOURCES/nvidia-driver-580.159.03-aarch64.tar.xz
+d89bf5ae4d72a406181d8f313308c19445d444df302bc76211e8a3e77359bbef SOURCES/nvidia-driver-580.159.03-x86_64.tar.xz
+8b5f29648d0bed3380c1bc1208fd2c5c8b7e67246e1107c441450c89b5546ae9 SOURCES/nvidia-persistenced-580.159.03.tar.gz
+7c9aeda82a59c38877239eb3b47fa14fcb64eadcb202bac225302384ba1b86f4 SOURCES/imex-linux-x86_64-580.159.03-archive.tar.xz

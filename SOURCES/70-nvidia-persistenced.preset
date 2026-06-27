@@ -1,0 +1,2 @@
+# If you're installing CUDA, you probably want this
+enable nvidia-persistenced.service

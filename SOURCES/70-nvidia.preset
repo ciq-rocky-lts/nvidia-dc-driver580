@@ -1,0 +1,15 @@
+# Original source: 
+# https://github.com/rpmfusion/xorg-x11-drv-nvidia/blob/master/70-nvidia.preset
+
+# Enable complete power management. From:
+# file:///usr/share/doc/nvidia-driver/html/powermanagement.html
+
+enable nvidia-hibernate.service
+enable nvidia-suspend-then-hibernate.service
+enable nvidia-resume.service
+enable nvidia-suspend.service
+
+# Enable Dynamic Boost. From:
+# file:///usr/share/doc/nvidia-driver/html/dynamicboost.html
+
+enable nvidia-powerd.service

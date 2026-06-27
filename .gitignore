@@ -1,0 +1,12 @@
+SOURCES/libnvidia_nscq-linux-sbsa-580.159.03-archive.tar.xz
+SOURCES/libnvsdm-linux-x86_64-580.159.03-archive.tar.xz
+SOURCES/nvidia-driver-580.159.03-i386.tar.xz
+SOURCES/nvidia-kmod-common-580.159.03.tar.xz
+SOURCES/fabricmanager-linux-sbsa-580.159.03-archive.tar.xz
+SOURCES/fabricmanager-linux-x86_64-580.159.03-archive.tar.xz
+SOURCES/imex-linux-sbsa-580.159.03-archive.tar.xz
+SOURCES/nvidia-driver-580.159.03-x86_64.tar.xz
+SOURCES/nvidia-persistenced-580.159.03.tar.gz
+SOURCES/imex-linux-x86_64-580.159.03-archive.tar.xz
+SOURCES/libnvidia_nscq-linux-x86_64-580.159.03-archive.tar.xz
+SOURCES/nvidia-driver-580.159.03-aarch64.tar.xz

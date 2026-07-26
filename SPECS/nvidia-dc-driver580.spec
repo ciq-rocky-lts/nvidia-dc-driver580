@@ -15,7 +15,7 @@
 # nvidia-persistenced version (seems to be kept in sync with desktop driver, but doesn't change frequently, so this shouldn't be an issue)
 # The rpm will have the driver version rather than the upstream version.  I'm not super happy about it, but the alternatives are to either push
 # persistenced into a separate package or run the risk of duplicate NEVRAs being generated.
-%define persistenced_version %{major_version}.159.03
+%define persistenced_version %{major_version}.173.02
 
 # Package name without major version namespace
 %define name_no_version nvidia-dc-driver
@@ -31,7 +31,7 @@
 %global _systemd_util_dir %{_prefix}/lib/systemd
 
 Name:           %{name_no_version}%{major_version}
-Version:        %{major_version}.159.03
+Version:        %{major_version}.173.02
 Release:        1%{?dist}
 Summary:        NVIDIA's proprietary display driver for NVIDIA Datacenter graphic cards (major version %{major_version})
 License:        NVIDIA License
@@ -1194,6 +1194,9 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.nvidia.driver.me
 
 
 %changelog
+* Tue Jul 21 2026 Jason Rodriguez <jrodriguez@ciq.com> - 580.173.02-1
+- Update to 580.173.02
+
 * Wed May 06 2026 Pratham Patel <ppatel@ciq.com> - 580.159.03-1
 - Update to 580.159.03
 

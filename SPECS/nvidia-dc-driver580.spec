@@ -15,7 +15,7 @@
 # nvidia-persistenced version (seems to be kept in sync with desktop driver, but doesn't change frequently, so this shouldn't be an issue)
 # The rpm will have the driver version rather than the upstream version.  I'm not super happy about it, but the alternatives are to either push
 # persistenced into a separate package or run the risk of duplicate NEVRAs being generated.
-%define persistenced_version %{major_version}.173.02
+%define persistenced_version %{major_version}.196.07
 
 # Package name without major version namespace
 %define name_no_version nvidia-dc-driver
@@ -31,7 +31,7 @@
 %global _systemd_util_dir %{_prefix}/lib/systemd
 
 Name:           %{name_no_version}%{major_version}
-Version:        %{major_version}.173.02
+Version:        %{major_version}.196.07
 Release:        1%{?dist}
 Summary:        NVIDIA's proprietary display driver for NVIDIA Datacenter graphic cards (major version %{major_version})
 License:        NVIDIA License
@@ -741,7 +741,7 @@ install -p -m 0644 -D sandboxutils-filelist.json %{buildroot}%{_datadir}/nvidia/
 %ifarch x86_64
 # Install firmware
 mkdir -p %{buildroot}/usr/lib/firmware/nvidia/%{version}
-install -p -m 0444 ../nvidia-kmod-common-%{version}/firmware/gsp_{ga,tu}10x.bin %{buildroot}/usr/lib/firmware/nvidia/%{version}/
+install -p -m 0444 ../nvidia-kmod-common-%{version}/firmware/*.bin %{buildroot}/usr/lib/firmware/nvidia/%{version}/
 %endif
 
 cd ../nvidia-persistenced-%{persistenced_version}
@@ -926,7 +926,9 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.nvidia.driver.me
 
 %define files_firmware() %{expand:\
 %license LICENSE
-%{_prefix}/lib/firmware/nvidia/%{version}
+%dir %{_prefix}/lib/firmware/nvidia/%{version}
+%{_prefix}/lib/firmware/nvidia/%{version}/gsp_ga10x.bin
+%{_prefix}/lib/firmware/nvidia/%{version}/gsp_tu10x.bin
 }
 
 
@@ -1194,6 +1196,13 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.nvidia.driver.me
 
 
 %changelog
+* Mon Oct 26 2026 Brett Mastbergen <bmastbergen@ciq.com> - 580.196.07-1
+- Update to 580.196.07
+
+* Tue Sep 15 2026 Andrew Jorgensen <ajorgens@ciq.com> - 580.178.04-1
+- Update to 580.178.04
+- A new upstream firmware blob now fails the build instead of shipping unnoticed
+
 * Tue Jul 21 2026 Jason Rodriguez <jrodriguez@ciq.com> - 580.173.02-1
 - Update to 580.173.02
 

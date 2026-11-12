@@ -83,11 +83,29 @@ create_tarball() {
 
     rm -fr ${TEMP_UNPACK}
 
+    # `.metadata` pins each tarball's checksum, so whoever rebuilds a version
+    # next has to land on the same bytes. Left alone tar records the building
+    # user, readdir order, and the moment of the build on every directory --
+    # the installer creates those rather than restoring them. Clamping to the
+    # installer's own mtime pins those directories and leaves every file
+    # older than it untouched.
+    clamp=$(stat -c %Y ${RUN_FILE})
+
+    # One xz thread is a different encoder and a different stream. Two or more
+    # agree, so a machine down to a single core still has to ask for two, and
+    # --no-adjust turns a memory limit that would quietly drop xz back to one
+    # into an error.
+    threads=$(nproc)
+    [ ${threads} -gt 1 ] || threads=2
+
     for tarball in ${KMOD_COMMON} ${USR_64} ${USR_32}; do
 
         printf "Creating tarball $tarball... "
 
-        XZ_OPT='-T0' tar --remove-files -cJf $tarball.tar.xz $tarball
+        XZ_OPT="-T${threads} --no-adjust" tar --sort=name \
+            --owner=0 --group=0 --numeric-owner \
+            --mtime="@${clamp}" --clamp-mtime \
+            --remove-files -cJf $tarball.tar.xz $tarball
 
         printf "OK\n"
 

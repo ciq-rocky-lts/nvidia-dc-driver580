@@ -32,7 +32,7 @@
 
 Name:           %{name_no_version}%{major_version}
 Version:        %{major_version}.196.07
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA's proprietary display driver for NVIDIA Datacenter graphic cards (major version %{major_version})
 License:        NVIDIA License
 URL:            http://www.nvidia.com/object/unix.html
@@ -810,26 +810,74 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.nvidia.driver.me
 
 
 %ifarch x86_64 aarch64
+# When a package of another name replaces this one,
+# the old package's %%preun disables its units after the new one's %%post.
+%define save_enabled() %{expand:
+if systemctl is-enabled --quiet %1 2>/dev/null; then
+    mkdir -p %{_localstatedir}/lib/rpm-state/nvidia-dc
+    touch %{_localstatedir}/lib/rpm-state/nvidia-dc/%1
+elif [ -e %{_localstatedir}/lib/rpm-state/nvidia-dc/%1 ]; then
+    # Left by an interrupted transaction; the admin has since disabled the unit
+    rm -f %{_localstatedir}/lib/rpm-state/nvidia-dc/%1
+fi
+:
+}
+%define restore_enabled() %{expand:
+if [ -e %{_localstatedir}/lib/rpm-state/nvidia-dc/%1 ]; then
+    systemctl --no-reload enable %1 >/dev/null 2>&1 || :
+    rm -f %{_localstatedir}/lib/rpm-state/nvidia-dc/%1
+fi
+:
+}
+
 %define global_scriptlets() %{expand:\
-# Normally, these run at %%post, but we run them at %%posttrans to handle the situation
-# where a user replaces the package using `dnf install nvidia-driver<major> --allowerasing`.
-# Previously, the %%post for the new package would run before the %%preun for the removed
-# package, leaving the systemd units disabled.
-%posttrans -n %{name_no_version}%1
+%pre -n %{name_no_version}%1
+%save_enabled nvidia-hibernate.service
+%save_enabled nvidia-powerd.service
+%save_enabled nvidia-resume.service
+%save_enabled nvidia-suspend.service
+%save_enabled nvidia-suspend-then-hibernate.service
+
+%post -n %{name_no_version}%1
 %systemd_post nvidia-hibernate.service
 %systemd_post nvidia-powerd.service
 %systemd_post nvidia-resume.service
 %systemd_post nvidia-suspend.service
 %systemd_post nvidia-suspend-then-hibernate.service
 
-%posttrans -n nvidia-dc-persistenced%1
+%posttrans -n %{name_no_version}%1
+%restore_enabled nvidia-hibernate.service
+%restore_enabled nvidia-powerd.service
+%restore_enabled nvidia-resume.service
+%restore_enabled nvidia-suspend.service
+%restore_enabled nvidia-suspend-then-hibernate.service
+
+%pre -n nvidia-dc-persistenced%1
+%save_enabled nvidia-persistenced.service
+
+%post -n nvidia-dc-persistenced%1
 %systemd_post nvidia-persistenced.service
 
-%posttrans -n nvidia-dc-fabric-manager%1
+%posttrans -n nvidia-dc-persistenced%1
+%restore_enabled nvidia-persistenced.service
+
+%pre -n nvidia-dc-fabric-manager%1
+%save_enabled nvidia-fabricmanager.service
+
+%post -n nvidia-dc-fabric-manager%1
 %systemd_post nvidia-fabricmanager.service
 
-%posttrans -n nvidia-dc-imex%1
+%posttrans -n nvidia-dc-fabric-manager%1
+%restore_enabled nvidia-fabricmanager.service
+
+%pre -n nvidia-dc-imex%1
+%save_enabled nvidia-imex.service
+
+%post -n nvidia-dc-imex%1
 %systemd_post nvidia-imex.service
+
+%posttrans -n nvidia-dc-imex%1
+%restore_enabled nvidia-imex.service
 
 %preun -n %{name_no_version}%1
 %systemd_preun nvidia-hibernate.service
@@ -1196,6 +1244,9 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.nvidia.driver.me
 
 
 %changelog
+* Fri Nov 20 2026 Andrew Jorgensen <ajorgens@ciq.com> - 580.196.07-2
+- Updates leave each service enabled or disabled as the admin set it
+
 * Mon Oct 26 2026 Brett Mastbergen <bmastbergen@ciq.com> - 580.196.07-1
 - Update to 580.196.07
 
